@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'cbt_quiz_project.wsgi.app'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db()
+    # 'default': env.db()
 }
 
 
