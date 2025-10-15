@@ -91,6 +91,29 @@
         height: 100%;
         transition: width 0.3s;
     }
+        /* Spinner animation */
+    .spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Disabled button appearance */
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
 </style>
 {% endblock %}
 
@@ -153,11 +176,11 @@
             
             <div>
                 {% if question_number < total_questions %}
-                <button type="submit" name="action" value="next" class="btn">
+                <button type="submit" name="action" value="next" class="btn" id="nextBtn">
                     Next →
                 </button>
                 {% else %}
-                <button type="submit" name="action" value="next" class="btn" style="background: #28a745;">
+                <button type="submit" name="action" value="next" class="btn" id="nextBtn" style="background: #28a745;">
                     ✓ Submit Quiz
                 </button>
                 {% endif %}
@@ -180,5 +203,21 @@
             this.classList.add('selected');
         });
     });
+    // Prevent multiple submissions + show loading spinner
+    document.getElementById('quizForm').addEventListener('submit', function(e) {
+        const nextBtn = document.getElementById('nextBtn');
+        if (nextBtn && !nextBtn.disabled) {
+            nextBtn.disabled = true;
+            const originalText = nextBtn.innerHTML;
+            const isSubmit = nextBtn.innerText.includes('Submit') || nextBtn.innerText.includes('✓');
+
+            // Replace button text with spinner + message
+            nextBtn.innerHTML = `
+                <span class="spinner"></span> 
+                ${isSubmit ? 'Submitting...' : ''}
+            `;
+        }
+    });
+
 </script>
 {% endblock %}
