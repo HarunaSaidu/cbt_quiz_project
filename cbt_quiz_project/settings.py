@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'cbt_quiz_project.wsgi.application'
+WSGI_APPLICATION = 'cbt_quiz_project.wsgi.app'
 
 
 # Database
