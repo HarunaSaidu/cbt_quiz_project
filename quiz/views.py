@@ -23,7 +23,7 @@ def start_quiz(request):
         
         # Store student info in session
         request.session['student_name'] = student_name
-        request.session['school'] = school
+        request.session['school'] = 'Isanbi High School'
         request.session['email'] = email
         request.session['start_time'] = datetime.now().isoformat()
         
