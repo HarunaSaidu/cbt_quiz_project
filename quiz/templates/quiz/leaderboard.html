@@ -1,0 +1,153 @@
+{% extends 'quiz/base.html' %}
+{% load my_custom_filters %}
+
+{% block title %}Leaderboard - CBT Quiz{% endblock %}
+
+{% block extra_css %}
+<style>
+    .leaderboard-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .trophy {
+        font-size: 4em;
+        margin-bottom: 10px;
+    }
+    
+    .leaderboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+    }
+    
+    .leaderboard-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    .leaderboard-table td {
+        padding: 15px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .leaderboard-table tr:hover {
+        background: #f8f9fa;
+    }
+    
+    .rank {
+        font-size: 1.5em;
+        font-weight: bold;
+        width: 60px;
+        text-align: center;
+    }
+    
+    .rank-1 { color: #FFD700; }
+    .rank-2 { color: #C0C0C0; }
+    .rank-3 { color: #CD7F32; }
+    
+    .medal {
+        font-size: 1.5em;
+        margin-right: 10px;
+    }
+    
+    .score-badge {
+        background: #667eea;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+    
+    .percentage-high {
+        color: #28a745;
+        font-weight: bold;
+    }
+    
+    .percentage-medium {
+        color: #ffc107;
+        font-weight: bold;
+    }
+    
+    .percentage-low {
+        color: #dc3545;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="leaderboard-header">
+        <div class="trophy">🏆</div>
+        <h1 style="color: #667eea; margin-bottom: 10px;">Top Performers</h1>
+        <p style="color: #6c757d; font-size: 1.1em;">Students who excelled in the Computer Basics Quiz</p>
+    </div>
+    
+    {% if attempts %}
+    <table class="leaderboard-table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Student Name</th>
+                <th>School</th>
+                <th>Score</th>
+                <th>Percentage</th>
+                <th>Time</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attempt in attempts %}
+            <tr>
+                <td class="rank rank-{{ forloop.counter }}">
+                    {% if forloop.counter == 1 %}
+                        <span class="medal">🥇</span>
+                    {% elif forloop.counter == 2 %}
+                        <span class="medal">🥈</span>
+                    {% elif forloop.counter == 3 %}
+                        <span class="medal">🥉</span>
+                    {% else %}
+                        {{ forloop.counter }}
+                    {% endif %}
+                </td>
+                <td><strong>{{ attempt.student_name }}</strong></td>
+                <td>{{ attempt.school|default:"N/A" }}</td>
+                <td>
+                    <span class="score-badge">{{ attempt.score }}/{{ attempt.total_questions }}</span>
+                </td>
+                <td>
+                    <span class="{% if attempt.percentage >= 80 %}percentage-high{% elif attempt.percentage >= 60 %}percentage-medium{% else %}percentage-low{% endif %}">
+                        {{ attempt.percentage|floatformat:0 }}%
+                    </span>
+                </td>
+                <td>{{ attempt.time_taken|div:60|floatformat:0 }}m {{ attempt.time_taken|mod:60 }}s</td>
+                <td>{{ attempt.attempted_at|date:"M d, Y" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 10px;">
+        <p style="font-size: 1.2em; color: #6c757d;">No quiz attempts yet. Be the first to take the quiz!</p>
+    </div>
+    {% endif %}
+    
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'index' %}" class="btn">
+            📝 Take the Quiz
+        </a>
+    </div>
+    
+    <div style="background: #fff3cd; padding: 20px; border-radius: 10px; margin-top: 30px; border-left: 4px solid #ffc107;">
+        <h3 style="color: #333; margin-bottom: 10px;">🎁 Prize Winners</h3>
+        <p style="line-height: 1.8;">
+            Students who score <strong>70% and above</strong> qualify for book prizes. 
+            Current winners are highlighted with their scores. Keep studying and aim for the top!
+        </p>
+    </div>
+</div>
+{% endblock %}

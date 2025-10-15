@@ -1,0 +1,64 @@
+{% extends 'quiz/base.html' %}
+
+{% block title %}Welcome - CBT Quiz{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h2 style="color: #667eea; margin-bottom: 20px;">Welcome to the Computer Basics Quiz! 🎓</h2>
+    
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+        <h3 style="color: #333; margin-bottom: 15px;">📋 Quiz Instructions:</h3>
+        <ul style="list-style-position: inside; line-height: 2;">
+            <li>This quiz contains <strong>10 questions</strong> randomly selected from a pool of 25 questions</li>
+            <li>Each question has <strong>4 options (A, B, C, D)</strong></li>
+            <li>Select the best answer by clicking on your choice</li>
+            <li>You can navigate between questions using <strong>Previous</strong> and <strong>Next</strong> buttons</li>
+            <li>You can change your answers before submitting</li>
+            <li>Click <strong>Submit Quiz</strong> when you're done with all questions</li>
+            <li>Your score will be calculated immediately</li>
+            <li><strong>Top scorers win books as prizes! 📚</strong></li>
+        </ul>
+    </div>
+    
+    <div style="background: #e7f3ff; padding: 20px; border-radius: 10px; margin-bottom: 30px; border-left: 4px solid #667eea;">
+        <h3 style="color: #333; margin-bottom: 10px;">💡 Tips for Success:</h3>
+        <ul style="list-style-position: inside; line-height: 2;">
+            <li>Read each question carefully</li>
+            <li>Think before selecting your answer</li>
+            <li>Don't rush - take your time</li>
+            <li>Review all questions before submitting</li>
+        </ul>
+    </div>
+    
+    <form method="POST" action="{% url 'start_quiz' %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="student_name">Full Name: <span style="color: red;">*</span></label>
+            <input type="text" id="student_name" name="student_name" required placeholder="Enter your full name">
+        </div>
+        
+        <div class="form-group">
+            <label for="school">School Name:</label>
+            <input value="Isanbi High School" disabled type="text" id="school" name="school" placeholder="Enter your school name (optional)">
+        </div>
+<!--         
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email (optional)">
+        </div> -->
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button type="submit" class="btn" style="padding: 15px 50px; font-size: 18px;">
+                🚀 Start Quiz
+            </button>
+        </div>
+    </form>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'leaderboard' %}" class="btn btn-secondary">
+            🏆 View Leaderboard
+        </a>
+    </div>
+</div>
+{% endblock %}
