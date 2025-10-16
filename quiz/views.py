@@ -165,7 +165,7 @@ def submit_quiz(request):
 
 def leaderboard(request):
     """Display top scores"""
-    top_attempts = QuizAttempt.objects.order_by('-score', 'time_taken')[:10]
+    top_attempts = QuizAttempt.objects.order_by('-score', 'time_taken')
     
     context = {
         'attempts': top_attempts,
